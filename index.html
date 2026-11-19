@@ -1,0 +1,1067 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ValthoGame — Mon compte</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:#07111e;
+ color:white;
+ font-family:Arial,sans-serif;
+ min-height:100vh;
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+
+header{
+ height:85px;
+ padding:0 7%;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ border-bottom:1px solid #203247;
+}
+.logo{
+ font-size:23px;
+ font-weight:900;
+ letter-spacing:2px;
+}
+.logo span{color:#38d8f5}
+
+.account-btn{
+ background:#38d8f5;
+ color:#06111d;
+ border:0;
+ border-radius:7px;
+ padding:14px 22px;
+ font-weight:800;
+}
+
+main{
+ max-width:900px;
+ margin:100px auto;
+ padding:25px;
+ text-align:center;
+}
+h1{font-size:48px;line-height:1.1}
+p{color:#a9bbce;line-height:1.7}
+
+.modal{
+ position:fixed;
+ inset:0;
+ background:#000b;
+ display:none;
+ align-items:center;
+ justify-content:center;
+ padding:18px;
+ z-index:10;
+}
+.modal.open{display:flex}
+
+.panel{
+ background:#101e30;
+ border:1px solid #29435d;
+ border-radius:18px;
+ padding:32px;
+ width:100%;
+ max-width:460px;
+ position:relative;
+ max-height:92vh;
+ overflow:auto;
+}
+
+.close{
+ position:absolute;
+ right:18px;
+ top:15px;
+ background:none;
+ border:0;
+ color:white;
+ font-size:25px;
+}
+
+.panel h2{margin:0 0 8px;font-size:27px}
+.subtitle{font-size:14px;margin:0 0 25px}
+
+.field{margin:13px 0;text-align:left}
+.field label{
+ display:block;
+ font-size:12px;
+ color:#a9bbce;
+ margin-bottom:7px;
+}
+.field input,.field select{
+ width:100%;
+ padding:13px;
+ background:#071321;
+ border:1px solid #31475d;
+ border-radius:7px;
+ color:white;
+ outline:none;
+}
+.field input:focus,.field select:focus{border-color:#38d8f5}
+.field input:disabled{opacity:.6}
+
+.primary,.secondary,.google{
+ width:100%;
+ padding:14px;
+ border-radius:7px;
+ font-weight:bold;
+ margin-top:12px;
+}
+.primary{
+ background:#38d8f5;
+ color:#06111d;
+ border:0;
+}
+.secondary{
+ background:#172b40;
+ color:white;
+ border:1px solid #38516a;
+}
+.google{
+ background:white;
+ color:#222;
+ border:0;
+}
+.google span{font-weight:900;margin-right:9px}
+
+.link{
+ color:#38d8f5;
+ cursor:pointer;
+ text-align:center;
+ margin-top:20px;
+ font-size:14px;
+}
+.hidden{display:none!important}
+
+.message{
+ font-size:13px;
+ margin-top:15px;
+ line-height:1.5;
+ color:#38d8f5;
+ overflow-wrap:anywhere;
+}
+
+.profile-line{
+ padding:13px 0;
+ border-bottom:1px solid #263c51;
+ text-align:left;
+}
+.profile-line small{
+ display:block;
+ color:#91a7bb;
+ margin-bottom:5px;
+}
+.profile-line strong{
+ font-size:15px;
+ overflow-wrap:anywhere;
+}
+.note{
+ color:#91a7bb;
+ font-size:12px;
+ line-height:1.5;
+ margin-top:15px;
+}
+
+@media(max-width:500px){
+ h1{font-size:35px}
+ .panel{padding:25px 20px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+ <div class="logo">VALTHO<span>GAME</span></div>
+ <button class="account-btn" id="accountButton">MON COMPTE ↗</button>
+</header>
+
+<main>
+ <h1>MON COMPTE</h1>
+ <p>Connecte-toi ou crée ton compte ValthoGame.</p>
+ <button class="account-btn" id="mainAccountButton">
+  ACCÉDER À MON COMPTE ↗
+ </button>
+</main>
+
+<div class="modal" id="accountModal">
+ <div class="panel">
+
+  <button class="close" id="closeModal">×</button>
+
+  <!-- CHOIX -->
+  <section id="choiceView">
+   <h2>Bienvenue !</h2>
+   <p class="subtitle">Accède à ton espace ValthoGame.</p>
+
+   <button class="primary" id="showLogin">ME CONNECTER</button>
+   <button class="secondary" id="showRegister">CRÉER UN COMPTE</button>
+   <button class="google" id="googleChoice">
+    <span>G</span> CONTINUER AVEC GOOGLE
+   </button>
+  </section>
+
+  <!-- CONNEXION -->
+  <section id="loginView" class="hidden">
+   <h2>Connexion</h2>
+   <p class="subtitle">Retrouve ton compte ValthoGame.</p>
+
+   <form id="loginForm">
+    <div class="field">
+     <label>ADRESSE EMAIL</label>
+     <input type="email" id="loginEmail" required autocomplete="email">
+    </div>
+
+    <div class="field">
+     <label>MOT DE PASSE</label>
+     <input type="password" id="loginPassword" required autocomplete="current-password">
+    </div>
+
+    <button class="primary" type="submit">SE CONNECTER</button>
+   </form>
+
+   <button class="google" id="googleLogin">
+    <span>G</span> CONTINUER AVEC GOOGLE
+   </button>
+
+   <div class="link" id="goRegister">Pas encore de compte ? Créer un compte</div>
+   <div class="link" id="backChoice">← Retour</div>
+  </section>
+
+  <!-- INSCRIPTION EMAIL -->
+  <section id="registerView" class="hidden">
+   <h2>Créer un compte</h2>
+   <p class="subtitle">Rejoins l'aventure ValthoGame.</p>
+
+   <form id="registerForm">
+
+    <div class="field">
+     <label>PRÉNOM</label>
+     <input id="firstName" required autocomplete="given-name">
+    </div>
+
+    <div class="field">
+     <label>NOM</label>
+     <input id="lastName" required autocomplete="family-name">
+    </div>
+
+    <div class="field">
+     <label>PSEUDO</label>
+     <input id="username" required minlength="3" maxlength="24">
+    </div>
+
+    <div class="field">
+     <label>DATE DE NAISSANCE (FACULTATIF)</label>
+     <input type="date" id="birthDate">
+    </div>
+
+    <div class="field">
+     <label>TÉLÉPHONE (FACULTATIF)</label>
+     <input type="tel" id="phone">
+    </div>
+
+    <div class="field">
+     <label>TYPE DE COMPTE</label>
+     <select id="accountType">
+      <option value="public">Grand public</option>
+      <option value="seasonal">Saisonnier</option>
+     </select>
+    </div>
+
+    <div class="field hidden" id="companyField">
+     <label>ENTREPRISE</label>
+     <input id="companyName" placeholder="Nom de ton entreprise">
+    </div>
+
+    <div class="field">
+     <label>ADRESSE EMAIL</label>
+     <input type="email" id="registerEmail" required autocomplete="email">
+    </div>
+
+    <div class="field">
+     <label>MOT DE PASSE (8 CARACTÈRES MINIMUM)</label>
+     <input type="password" id="registerPassword" required minlength="8" autocomplete="new-password">
+    </div>
+
+    <button class="primary" type="submit">CRÉER MON COMPTE</button>
+   </form>
+
+   <div class="link" id="goLogin">Déjà inscrit ? Se connecter</div>
+   <div class="link" id="backChoice2">← Retour</div>
+  </section>
+
+  <!-- COMPLETER PROFIL GOOGLE -->
+  <section id="completeView" class="hidden">
+   <h2>Bienvenue sur ValthoGame !</h2>
+   <p class="subtitle">
+    Ton compte Google est connecté. Complète maintenant ton profil pour commencer.
+   </p>
+
+   <form id="completeForm">
+
+    <div class="field">
+     <label>ADRESSE EMAIL GOOGLE</label>
+     <input id="googleEmail" disabled>
+    </div>
+
+    <div class="field">
+     <label>PRÉNOM</label>
+     <input id="completeFirstName" required>
+    </div>
+
+    <div class="field">
+     <label>NOM</label>
+     <input id="completeLastName" required>
+    </div>
+
+    <div class="field">
+     <label>PSEUDO</label>
+     <input id="completeUsername" required minlength="3" maxlength="24">
+    </div>
+
+    <div class="field">
+     <label>DATE DE NAISSANCE (FACULTATIF)</label>
+     <input type="date" id="completeBirthDate">
+    </div>
+
+    <div class="field">
+     <label>TÉLÉPHONE (FACULTATIF)</label>
+     <input type="tel" id="completePhone">
+    </div>
+
+    <div class="field">
+     <label>TYPE DE COMPTE</label>
+     <select id="completeAccountType">
+      <option value="public">Grand public</option>
+      <option value="seasonal">Saisonnier</option>
+     </select>
+    </div>
+
+    <div class="field hidden" id="completeCompanyField">
+     <label>ENTREPRISE</label>
+     <input id="completeCompany" placeholder="Nom de ton entreprise">
+    </div>
+
+    <button class="primary" type="submit">TERMINER MON INSCRIPTION</button>
+   </form>
+
+   <p class="note">
+    Tes informations personnelles ne seront pas affichées publiquement dans les classements.
+   </p>
+  </section>
+
+  <!-- PROFIL -->
+  <section id="profileView" class="hidden">
+   <h2>Mon profil</h2>
+   <p class="subtitle">Bienvenue dans ton espace personnel.</p>
+
+   <div id="profileDetails"></div>
+
+   <button class="primary" id="editProfile">MODIFIER MON PROFIL</button>
+   <button class="secondary" id="logoutButton">ME DÉCONNECTER</button>
+  </section>
+
+  <!-- MODIFICATION -->
+  <section id="editView" class="hidden">
+   <h2>Modifier mon profil</h2>
+
+   <form id="editForm">
+    <div class="field">
+     <label>PRÉNOM</label>
+     <input id="editFirstName" required>
+    </div>
+
+    <div class="field">
+     <label>NOM</label>
+     <input id="editLastName" required>
+    </div>
+
+    <div class="field">
+     <label>PSEUDO</label>
+     <input id="editUsername" required minlength="3">
+    </div>
+
+    <div class="field">
+     <label>TÉLÉPHONE</label>
+     <input id="editPhone">
+    </div>
+
+    <div class="field">
+     <label>DATE DE NAISSANCE</label>
+     <input type="date" id="editBirthDate">
+    </div>
+
+    <button class="primary" type="submit">ENREGISTRER</button>
+   </form>
+
+   <div class="link" id="backProfile">← Retour au profil</div>
+  </section>
+
+  <div class="message" id="statusMessage"></div>
+
+ </div>
+</div>
+
+<script>
+
+/* =================================
+   CONFIGURATION SUPABASE
+================================= */
+
+const SUPABASE_URL = "https://qlnxqmvlvlviqjgpetpt.supabase.co";
+
+const SUPABASE_KEY = "sb_publishable_SXVwp09CpybRw1n6kwe4nA__qW1HqlS";
+
+/*
+ La redirection reprend automatiquement
+ l'adresse actuelle du fichier HTML.
+*/
+
+const REDIRECT_URL = window.location.origin + window.location.pathname;
+
+let supabaseClient = null;
+let currentUser = null;
+let currentProfile = null;
+
+const $ = id => document.getElementById(id);
+
+
+/* =================================
+   AFFICHAGE
+================================= */
+
+function message(text){
+ $("statusMessage").textContent = text;
+}
+
+function showView(view){
+ [
+  "choiceView",
+  "loginView",
+  "registerView",
+  "completeView",
+  "profileView",
+  "editView"
+ ].forEach(id=>{
+  $(id).classList.toggle("hidden",id!==view);
+ });
+
+ message("");
+}
+
+function openModal(){
+ $("accountModal").classList.add("open");
+
+ if(currentUser){
+  loadProfile();
+ }else{
+  showView("choiceView");
+ }
+}
+
+function closeModal(){
+ $("accountModal").classList.remove("open");
+}
+
+function accountClick(){
+ openModal();
+}
+
+$("accountButton").addEventListener("click",accountClick);
+$("mainAccountButton").addEventListener("click",accountClick);
+$("closeModal").addEventListener("click",closeModal);
+
+$("accountModal").addEventListener("click",e=>{
+ if(e.target===$("accountModal")) closeModal();
+});
+
+$("showLogin").onclick=()=>showView("loginView");
+$("showRegister").onclick=()=>showView("registerView");
+$("goRegister").onclick=()=>showView("registerView");
+$("goLogin").onclick=()=>showView("loginView");
+$("backChoice").onclick=()=>showView("choiceView");
+$("backChoice2").onclick=()=>showView("choiceView");
+$("backProfile").onclick=()=>loadProfile();
+
+
+/* =================================
+   TYPES DE COMPTE
+================================= */
+
+$("accountType").addEventListener("change",()=>{
+ $("companyField").classList.toggle(
+  "hidden",
+  $("accountType").value!=="seasonal"
+ );
+});
+
+$("completeAccountType").addEventListener("change",()=>{
+ $("completeCompanyField").classList.toggle(
+  "hidden",
+  $("completeAccountType").value!=="seasonal"
+ );
+});
+
+
+/* =================================
+   INITIALISATION
+================================= */
+
+async function initializeSupabase(){
+
+ try{
+
+  if(!window.supabase){
+   throw new Error("La bibliothèque Supabase n'a pas été chargée.");
+  }
+
+  supabaseClient=window.supabase.createClient(
+   SUPABASE_URL,
+   SUPABASE_KEY
+  );
+
+  const {data,error}=await supabaseClient.auth.getSession();
+
+  if(error)throw error;
+
+  currentUser=data.session?.user||null;
+
+  if(currentUser){
+   await loadProfile();
+  }
+
+  supabaseClient.auth.onAuthStateChange(
+   async(event,session)=>{
+
+    currentUser=session?.user||null;
+
+    if(event==="SIGNED_OUT"){
+     currentProfile=null;
+     showView("choiceView");
+    }
+
+    if(event==="SIGNED_IN" && currentUser){
+     await loadProfile();
+    }
+
+   }
+  );
+
+ }catch(error){
+
+  console.error(error);
+  message("Erreur Supabase : "+error.message);
+
+ }
+
+}
+
+
+/* =================================
+   VÉRIFICATION SUPABASE
+================================= */
+
+async function requireClient(){
+
+ if(!supabaseClient){
+  message("Supabase n'est pas initialisé. Vérifie ta connexion internet.");
+  return false;
+ }
+
+ return true;
+
+}
+
+
+/* =================================
+   CONNEXION GOOGLE
+================================= */
+
+async function googleLogin(){
+
+ if(!await requireClient()) return;
+
+ message("Redirection vers Google...");
+
+ try{
+
+  const {data,error}=await supabaseClient.auth.signInWithOAuth({
+
+   provider:"google",
+
+   options:{
+    redirectTo:REDIRECT_URL,
+
+    queryParams:{
+     access_type:"offline",
+     prompt:"select_account"
+    }
+   }
+
+  });
+
+  if(error)throw error;
+
+ }catch(error){
+
+  console.error(error);
+  message("Erreur Google : "+error.message);
+
+ }
+
+}
+
+$("googleLogin").addEventListener("click",googleLogin);
+$("googleChoice").addEventListener("click",googleLogin);
+
+
+/* =================================
+   INSCRIPTION AVEC EMAIL
+================================= */
+
+$("registerForm").addEventListener("submit",async e=>{
+
+ e.preventDefault();
+
+ if(!await requireClient())return;
+
+ const firstName=$("firstName").value.trim();
+ const lastName=$("lastName").value.trim();
+ const username=$("username").value.trim();
+ const accountType=$("accountType").value;
+ const companyName=$("companyName").value.trim();
+
+ if(accountType==="seasonal"&&!companyName){
+  message("Indique le nom de ton entreprise.");
+  return;
+ }
+
+ message("Création de ton compte...");
+
+ try{
+
+  const {data,error}=await supabaseClient.auth.signUp({
+
+   email:$("registerEmail").value.trim(),
+
+   password:$("registerPassword").value,
+
+   options:{
+    data:{
+     first_name:firstName,
+     last_name:lastName,
+     username:username,
+     birth_date:$("birthDate").value||null,
+     phone:$("phone").value.trim()||null,
+     account_type:accountType,
+     company_name:accountType==="seasonal"?companyName:null
+    }
+   }
+
+  });
+
+  if(error)throw error;
+
+  if(data.session){
+
+   currentUser=data.user;
+
+   await saveProfile({
+    first_name:firstName,
+    last_name:lastName,
+    username:username,
+    birth_date:$("birthDate").value||null,
+    phone:$("phone").value.trim()||null,
+    account_type:accountType,
+    company_name:accountType==="seasonal"?companyName:null
+   });
+
+  }else{
+
+   message("Compte créé ! Vérifie tes emails pour confirmer ton inscription.");
+
+  }
+
+ }catch(error){
+
+  console.error(error);
+  message("Erreur d'inscription : "+error.message);
+
+ }
+
+});
+
+
+/* =================================
+   CONNEXION EMAIL
+================================= */
+
+$("loginForm").addEventListener("submit",async e=>{
+
+ e.preventDefault();
+
+ if(!await requireClient())return;
+
+ message("Connexion en cours...");
+
+ try{
+
+  const {data,error}=await supabaseClient.auth.signInWithPassword({
+
+   email:$("loginEmail").value.trim(),
+
+   password:$("loginPassword").value
+
+  });
+
+  if(error)throw error;
+
+  currentUser=data.user;
+
+  await loadProfile();
+
+ }catch(error){
+
+  console.error(error);
+  message("Erreur de connexion : "+error.message);
+
+ }
+
+});
+
+
+/* =================================
+   CHARGEMENT DU PROFIL
+================================= */
+
+async function loadProfile(){
+
+ if(!currentUser||!await requireClient())return;
+
+ message("Chargement du profil...");
+
+ try{
+
+  const {data,error}=await supabaseClient
+   .from("profiles")
+   .select("*")
+   .eq("id",currentUser.id)
+   .maybeSingle();
+
+  if(error)throw error;
+
+  currentProfile=data;
+
+  if(
+   !data ||
+   !data.first_name ||
+   !data.last_name ||
+   !data.username
+  ){
+
+   showCompleteForm(data);
+   return;
+
+  }
+
+  renderProfile(data);
+
+ }catch(error){
+
+  console.error(error);
+
+  message(
+   "Impossible de charger ton profil : "+error.message
+  );
+
+ }
+
+}
+
+
+/* =================================
+   FORMULAIRE GOOGLE / PROFIL INCOMPLET
+================================= */
+
+function showCompleteForm(profile){
+
+ profile=profile||{};
+
+ const metadata=currentUser.user_metadata||{};
+
+ $("googleEmail").value=currentUser.email||"";
+
+ $("completeFirstName").value=
+  profile.first_name||metadata.first_name||metadata.given_name||"";
+
+ $("completeLastName").value=
+  profile.last_name||metadata.last_name||metadata.family_name||"";
+
+ $("completeUsername").value=
+  profile.username||metadata.username||"";
+
+ $("completeBirthDate").value=
+  profile.birth_date||"";
+
+ $("completePhone").value=
+  profile.phone||"";
+
+ $("completeAccountType").value=
+  profile.account_type||"public";
+
+ $("completeCompany").value=
+  profile.company_name||"";
+
+ $("completeCompanyField").classList.toggle(
+  "hidden",
+  $("completeAccountType").value!=="seasonal"
+ );
+
+ showView("completeView");
+
+}
+
+
+/* =================================
+   ENREGISTREMENT PROFIL
+================================= */
+
+async function saveProfile(profileData){
+
+ if(!currentUser||!await requireClient())return;
+
+ message("Enregistrement de ton profil...");
+
+ try{
+
+  const payload={
+   id:currentUser.id,
+   first_name:profileData.first_name,
+   last_name:profileData.last_name,
+   username:profileData.username,
+   birth_date:profileData.birth_date||null,
+   phone:profileData.phone||null,
+   account_type:profileData.account_type||"public",
+   company_name:profileData.company_name||null
+  };
+
+  const {data:existing,error:selectError}=await supabaseClient
+   .from("profiles")
+   .select("id")
+   .eq("id",currentUser.id)
+   .maybeSingle();
+
+  if(selectError)throw selectError;
+
+  let result;
+
+  if(existing){
+
+   result=await supabaseClient
+    .from("profiles")
+    .update(payload)
+    .eq("id",currentUser.id);
+
+  }else{
+
+   result=await supabaseClient
+    .from("profiles")
+    .insert(payload);
+
+  }
+
+  if(result.error)throw result.error;
+
+  await loadProfile();
+
+ }catch(error){
+
+  console.error(error);
+
+  message(
+   "Erreur lors de l'enregistrement : "+error.message
+  );
+
+ }
+
+}
+
+
+/* =================================
+   FINALISER INSCRIPTION GOOGLE
+================================= */
+
+$("completeForm").addEventListener("submit",async e=>{
+
+ e.preventDefault();
+
+ if(!currentUser)return;
+
+ const accountType=$("completeAccountType").value;
+ const companyName=$("completeCompany").value.trim();
+
+ if(accountType==="seasonal"&&!companyName){
+  message("Indique le nom de ton entreprise.");
+  return;
+ }
+
+ await saveProfile({
+
+  first_name:$("completeFirstName").value.trim(),
+
+  last_name:$("completeLastName").value.trim(),
+
+  username:$("completeUsername").value.trim(),
+
+  birth_date:$("completeBirthDate").value||null,
+
+  phone:$("completePhone").value.trim()||null,
+
+  account_type:accountType,
+
+  company_name:accountType==="seasonal"?companyName:null
+
+ });
+
+});
+
+
+/* =================================
+   AFFICHAGE DU PROFIL
+================================= */
+
+function escapeHTML(value){
+
+ return String(value).replace(/[&<>"']/g,c=>({
+  "&":"&amp;",
+  "<":"&lt;",
+  ">":"&gt;",
+  '"':"&quot;",
+  "'":"&#39;"
+ }[c]));
+
+}
+
+function renderProfile(data){
+
+ const rows=[
+
+  ["Prénom",data.first_name],
+  ["Nom",data.last_name],
+  ["Pseudo",data.username],
+  ["Email",currentUser.email],
+  ["Téléphone",data.phone],
+  ["Date de naissance",data.birth_date],
+  [
+   "Type de compte",
+   data.account_type==="seasonal"?"Saisonnier":"Grand public"
+  ],
+  ["Entreprise",data.company_name],
+  [
+   "Compte créé le",
+   new Date(currentUser.created_at).toLocaleDateString("fr-FR")
+  ]
+
+ ];
+
+ $("profileDetails").innerHTML=rows
+
+  .filter(([label,value])=>value)
+
+  .map(([label,value])=>
+   `<div class="profile-line">
+    <small>${escapeHTML(label)}</small>
+    <strong>${escapeHTML(value)}</strong>
+   </div>`
+  )
+
+  .join("");
+
+ $("editFirstName").value=data.first_name||"";
+ $("editLastName").value=data.last_name||"";
+ $("editUsername").value=data.username||"";
+ $("editPhone").value=data.phone||"";
+ $("editBirthDate").value=data.birth_date||"";
+
+ showView("profileView");
+
+}
+
+
+/* =================================
+   MODIFICATION PROFIL
+================================= */
+
+$("editProfile").onclick=()=>showView("editView");
+
+$("editForm").addEventListener("submit",async e=>{
+
+ e.preventDefault();
+
+ if(!currentUser)return;
+
+ await saveProfile({
+
+  first_name:$("editFirstName").value.trim(),
+
+  last_name:$("editLastName").value.trim(),
+
+  username:$("editUsername").value.trim(),
+
+  phone:$("editPhone").value.trim()||null,
+
+  birth_date:$("editBirthDate").value||null,
+
+  account_type:currentProfile?.account_type||"public",
+
+  company_name:currentProfile?.company_name||null
+
+ });
+
+});
+
+
+/* =================================
+   DÉCONNEXION
+================================= */
+
+$("logoutButton").addEventListener("click",async()=>{
+
+ if(!await requireClient())return;
+
+ const {error}=await supabaseClient.auth.signOut();
+
+ if(error){
+  message("Erreur : "+error.message);
+  return;
+ }
+
+ currentUser=null;
+ currentProfile=null;
+
+ showView("choiceView");
+
+ message("Tu es déconnecté.");
+
+});
+
+
+/* =================================
+   DÉMARRAGE
+================================= */
+
+initializeSupabase();
+
+</script>
+
+</body>
+</html>
