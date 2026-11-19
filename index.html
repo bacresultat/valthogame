@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -356,7 +355,134 @@ let supabaseClient = null;
 let currentUser = null;
 let currentProfile = null;
 
+
 const $ = id => document.getElementById(id);
+
+/* SAUVEGARDE AUTOMATIQUE DES FORMULAIRES
+   Aucun mot de passe n'est jamais enregistré dans le navigateur. */
+const REGISTER_DRAFT_KEY = "valthogame_register_draft_v1";
+const COMPLETE_DRAFT_PREFIX = "valthogame_complete_draft_v1_";
+const DRAFT_MAX_AGE = 7 * 24 * 60 * 60 * 1000;
+
+function readDraft(key){
+ try{
+  const raw=localStorage.getItem(key);
+  if(!raw)return null;
+  const draft=JSON.parse(raw);
+  if(!draft.savedAt || Date.now()-draft.savedAt>DRAFT_MAX_AGE){
+   localStorage.removeItem(key);
+   return null;
+  }
+  return draft.values||null;
+ }catch(error){
+  console.warn("Lecture du brouillon impossible :",error);
+  return null;
+ }
+}
+
+function writeDraft(key,values){
+ try{
+  localStorage.setItem(key,JSON.stringify({
+   savedAt:Date.now(),
+   values
+  }));
+ }catch(error){
+  console.warn("Sauvegarde du brouillon impossible :",error);
+ }
+}
+
+function clearDraft(key){
+ try{localStorage.removeItem(key);}catch(error){}
+}
+
+function registerDraftValues(){
+ return {
+  firstName:$("firstName").value,
+  lastName:$("lastName").value,
+  username:$("username").value,
+  birthDate:$("birthDate").value,
+  phone:$("phone").value,
+  accountType:$("accountType").value,
+  companyName:$("companyName").value,
+  companyId:$("companyId").value,
+  email:$("registerEmail").value
+ };
+}
+
+function saveRegisterDraft(){
+ writeDraft(REGISTER_DRAFT_KEY,registerDraftValues());
+}
+
+function restoreRegisterDraft(){
+ const draft=readDraft(REGISTER_DRAFT_KEY);
+ if(!draft)return;
+ $("firstName").value=draft.firstName||"";
+ $("lastName").value=draft.lastName||"";
+ $("username").value=draft.username||"";
+ $("birthDate").value=draft.birthDate||"";
+ $("phone").value=draft.phone||"";
+ $("accountType").value=draft.accountType==="seasonal"?"seasonal":"public";
+ $("companyName").value=draft.companyName||"";
+ $("companyId").value=draft.companyId||"";
+ $("registerEmail").value=draft.email||"";
+ $("companyField").classList.toggle("hidden",$("accountType").value!=="seasonal");
+}
+
+function completeDraftKey(){
+ return currentUser?.id ? COMPLETE_DRAFT_PREFIX+currentUser.id : null;
+}
+
+function completeDraftValues(){
+ return {
+  firstName:$("completeFirstName").value,
+  lastName:$("completeLastName").value,
+  username:$("completeUsername").value,
+  birthDate:$("completeBirthDate").value,
+  phone:$("completePhone").value,
+  accountType:$("completeAccountType").value,
+  companyName:$("completeCompany").value,
+  companyId:$("completeCompanyId").value
+ };
+}
+
+function saveCompleteDraft(){
+ const key=completeDraftKey();
+ if(key)writeDraft(key,completeDraftValues());
+}
+
+function restoreCompleteDraft(){
+ const key=completeDraftKey();
+ if(!key)return;
+ const draft=readDraft(key);
+ if(!draft)return;
+ $("completeFirstName").value=draft.firstName||$("completeFirstName").value;
+ $("completeLastName").value=draft.lastName||$("completeLastName").value;
+ $("completeUsername").value=draft.username||$("completeUsername").value;
+ $("completeBirthDate").value=draft.birthDate||$("completeBirthDate").value;
+ $("completePhone").value=draft.phone||$("completePhone").value;
+ $("completeAccountType").value=draft.accountType==="seasonal"?"seasonal":"public";
+ completeCompanyAutocomplete.set(
+  draft.companyName||"",
+  draft.companyId||""
+ );
+ $("completeCompanyField").classList.toggle(
+  "hidden",
+  $("completeAccountType").value!=="seasonal"
+ );
+}
+
+function openRegisterView(){
+ restoreRegisterDraft();
+ showView("registerView");
+}
+
+function installDraftAutosave(){
+ $("registerForm").addEventListener("input",saveRegisterDraft);
+ $("registerForm").addEventListener("change",saveRegisterDraft);
+ $("completeForm").addEventListener("input",saveCompleteDraft);
+ $("completeForm").addEventListener("change",saveCompleteDraft);
+}
+
 
 /* AFFICHAGE */
 
@@ -374,12 +500,22 @@ function showView(view){
  message("");
 }
 
-function openModal(){
+async function openModal(){
  $("accountModal").classList.add("open");
- if(currentUser){
-  loadProfile();
- }else{
+ if(!await requireClient())return;
+ try{
+  const {data,error}=await supabaseClient.auth.getSession();
+  if(error)throw error;
+  currentUser=data.session?.user||null;
+  if(currentUser){
+   await loadProfile();
+  }else{
+   showView("choiceView");
+  }
+ }catch(error){
+  console.error("Vérification de session :",error);
   showView("choiceView");
+  message("Impossible de vérifier ta session. Réessaie dans un instant.");
  }
 }
 
@@ -396,8 +532,8 @@ $("accountModal").addEventListener("click",e=>{
 });
 
 $("showLogin").onclick=()=>showView("loginView");
-$("showRegister").onclick=()=>showView("registerView");
-$("goRegister").onclick=()=>showView("registerView");
+$("showRegister").onclick=openRegisterView;
+$("goRegister").onclick=openRegisterView;
 $("goLogin").onclick=()=>showView("loginView");
 $("backChoice").onclick=()=>showView("choiceView");
 $("backChoice2").onclick=()=>showView("choiceView");
@@ -426,6 +562,7 @@ function setupCompanyAutocomplete(inputId,hiddenId,suggestionsId){
   input.value=company.name;
   hidden.value=company.id;
   closeSuggestions();
+  input.dispatchEvent(new Event("change",{bubbles:true}));
  }
 
  input.addEventListener("input",()=>{
@@ -497,9 +634,9 @@ function setupCompanyAutocomplete(inputId,hiddenId,suggestionsId){
    hidden.value="";
    closeSuggestions();
   },
-  set(name){
+  set(name,id=""){
    input.value=name||"";
-   hidden.value="";
+   hidden.value=id||"";
    closeSuggestions();
   }
  };
@@ -635,6 +772,7 @@ $("registerForm").addEventListener("submit",async e=>{
  const accountType=$("accountType").value;
  const companyName=$("companyName").value.trim();
  const companyId=$("companyId").value;
+ saveRegisterDraft();
 
  if(accountType==="seasonal"&&(!companyName||!companyId)){
   message("Sélectionne une entreprise dans les suggestions.");
@@ -677,7 +815,7 @@ $("registerForm").addEventListener("submit",async e=>{
    });
 
   }else{
-   message("Compte créé ! Consulte ta boîte mail et clique sur le lien de confirmation pour activer ton compte.");
+   message("Compte créé ! Consulte ta boîte mail et clique sur le lien de confirmation. Tes informations sont sauvegardées sur cet appareil pendant 7 jours ; ne ferme pas/efface pas les données du navigateur si tu veux les retrouver.");
   }
 
  }catch(error){
@@ -773,6 +911,7 @@ function showCompleteForm(profile={}){
   $("completeAccountType").value!=="seasonal"
  );
 
+ restoreCompleteDraft();
  showView("completeView");
 }
 
@@ -812,6 +951,9 @@ async function saveProfile(profileData){
   if(readError)throw readError;
 
   currentProfile=updatedProfile;
+  clearDraft(REGISTER_DRAFT_KEY);
+  const completionKey=completeDraftKey();
+  if(completionKey)clearDraft(completionKey);
   renderProfile(updatedProfile);
 
  }catch(error){
@@ -829,6 +971,7 @@ $("completeForm").addEventListener("submit",async e=>{
  const accountType=$("completeAccountType").value;
  const companyName=$("completeCompany").value.trim();
  const companyId=$("completeCompanyId").value;
+ saveCompleteDraft();
 
  if(accountType==="seasonal"&&(!companyName||!companyId)){
   message("Sélectionne une entreprise dans les suggestions.");
@@ -976,6 +1119,7 @@ $("adminLogout").onclick=logout;
 
 /* DEMARRAGE */
 
+installDraftAutosave();
 initializeSupabase();
 </script>
 </body>
