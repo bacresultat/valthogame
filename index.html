@@ -5,133 +5,86 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ValthoGame — Mon compte</title>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 *{box-sizing:border-box}
-body{
- margin:0;background:#07111e;color:white;
- font-family:Arial,sans-serif;min-height:100vh
-}
+body{margin:0;background:#07111e;color:white;font-family:Arial,sans-serif;min-height:100vh}
 button,input,select{font:inherit}
 button{cursor:pointer}
-header{
- height:85px;padding:0 7%;display:flex;
- align-items:center;justify-content:space-between;
- border-bottom:1px solid #203247
-}
+header{height:85px;padding:0 7%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #203247}
 .logo{font-size:23px;font-weight:900;letter-spacing:2px}
 .logo span{color:#38d8f5}
-.account-btn{
- background:#38d8f5;color:#06111d;border:0;
- border-radius:7px;padding:14px 22px;font-weight:800
-}
-main{
- max-width:900px;margin:100px auto;padding:25px;text-align:center
-}
+.account-btn{background:#38d8f5;color:#06111d;border:0;border-radius:7px;padding:14px 22px;font-weight:800}
+main{max-width:900px;margin:100px auto;padding:25px;text-align:center}
 h1{font-size:48px;line-height:1.1}
 p{color:#a9bbce;line-height:1.7}
-.modal{
- position:fixed;inset:0;background:#000b;display:none;
- align-items:center;justify-content:center;padding:18px;z-index:10
-}
+.modal{position:fixed;inset:0;background:#000b;display:none;align-items:center;justify-content:center;padding:18px;z-index:10}
 .modal.open{display:flex}
-.panel{
- background:#101e30;border:1px solid #29435d;border-radius:18px;
- padding:32px;width:100%;max-width:460px;position:relative;
- max-height:92vh;overflow:auto
-}
-.close{
- position:absolute;right:18px;top:15px;background:none;
- border:0;color:white;font-size:25px
-}
+.panel{background:#101e30;border:1px solid #29435d;border-radius:18px;padding:32px;width:100%;max-width:460px;position:relative;max-height:92vh;overflow:auto}
+.close{position:absolute;right:18px;top:15px;background:none;border:0;color:white;font-size:25px}
 .panel h2{margin:0 0 8px;font-size:27px}
 .subtitle{font-size:14px;margin:0 0 25px}
 .field{margin:13px 0;text-align:left}
-.field label{
- display:block;font-size:12px;color:#a9bbce;margin-bottom:7px
-}
-.field input,.field select{
- width:100%;padding:13px;background:#071321;
- border:1px solid #31475d;border-radius:7px;color:white;outline:none
-}
+.field label{display:block;font-size:12px;color:#a9bbce;margin-bottom:7px}
+.field input,.field select{width:100%;padding:13px;background:#071321;border:1px solid #31475d;border-radius:7px;color:white;outline:none}
 .field input:focus,.field select:focus{border-color:#38d8f5}
 .field input:disabled{opacity:.6}
-.primary,.secondary,.google{
- width:100%;padding:14px;border-radius:7px;
- font-weight:bold;margin-top:12px
+.hidden{display:none!important}
+
+.company-autocomplete{position:relative}
+.company-suggestions{
+ position:absolute;top:100%;left:0;right:0;z-index:30;
+ background:#0b1929;border:1px solid #38d8f5;border-radius:8px;
+ margin-top:5px;max-height:230px;overflow-y:auto;
+ box-shadow:0 12px 28px #0008
 }
+.company-suggestion{
+ display:flex;flex-direction:column;gap:4px;width:100%;
+ padding:12px 13px;background:transparent;border:0;
+ border-bottom:1px solid #203247;color:white;text-align:left
+}
+.company-suggestion:last-child{border-bottom:0}
+.company-suggestion:hover{background:#17334a}
+.company-suggestion strong{font-size:14px}
+.company-suggestion small{font-size:11px;color:#91a7bb}
+.company-hint{font-size:11px;color:#91a7bb;margin-top:7px;line-height:1.5}
+.company-empty{padding:13px;color:#a9bbce;font-size:12px;line-height:1.5}
+
+.primary,.secondary,.google{width:100%;padding:14px;border-radius:7px;font-weight:bold;margin-top:12px}
 .primary{background:#38d8f5;color:#06111d;border:0}
 .secondary{background:#172b40;color:white;border:1px solid #38516a}
 .google{background:white;color:#222;border:0}
 .google span{font-weight:900;margin-right:9px}
-.link{
- color:#38d8f5;cursor:pointer;text-align:center;
- margin-top:20px;font-size:14px
-}
-.hidden{display:none!important}
-.message{
- font-size:13px;margin-top:15px;line-height:1.5;
- color:#38d8f5;overflow-wrap:anywhere
-}
-.profile-line{
- padding:13px 0;border-bottom:1px solid #263c51;text-align:left
-}
+.link{color:#38d8f5;cursor:pointer;text-align:center;margin-top:20px;font-size:14px}
+.message{font-size:13px;margin-top:15px;line-height:1.5;color:#38d8f5;overflow-wrap:anywhere}
+.profile-line{padding:13px 0;border-bottom:1px solid #263c51;text-align:left}
 .profile-line small{display:block;color:#91a7bb;margin-bottom:5px}
 .profile-line strong{font-size:15px;overflow-wrap:anywhere}
 .note{color:#91a7bb;font-size:12px;line-height:1.5;margin-top:15px}
 
 /* ESPACE ADMIN */
-
 .admin-area{width:100%;max-width:100%}
-.admin-top{
- display:flex;justify-content:space-between;
- align-items:center;gap:15px;margin-bottom:25px
-}
-.admin-tag{
- display:inline-block;background:#123b50;color:#38d8f5;
- border:1px solid #23617a;border-radius:6px;
- padding:7px 11px;font-size:11px;font-weight:900;letter-spacing:1.5px
-}
+.admin-top{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:25px}
+.admin-tag{display:inline-block;background:#123b50;color:#38d8f5;border:1px solid #23617a;border-radius:6px;padding:7px 11px;font-size:11px;font-weight:900;letter-spacing:1.5px}
 .admin-title{font-size:30px!important;margin:13px 0 5px!important}
 .admin-subtitle{color:#91a7bb;font-size:13px;margin:0}
-.admin-account{
- background:#0b1827;border:1px solid #29435d;
- border-radius:12px;padding:15px;text-align:left;margin-bottom:22px
-}
+.admin-account{background:#0b1827;border:1px solid #29435d;border-radius:12px;padding:15px;text-align:left;margin-bottom:22px}
 .admin-account small{color:#91a7bb;display:block;margin-bottom:6px}
 .admin-account strong{color:#38d8f5;overflow-wrap:anywhere}
-.admin-grid{
- display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px
-}
-.admin-card{
- background:linear-gradient(145deg,#14263a,#0b1726);
- border:1px solid #29435d;border-radius:12px;
- padding:20px;text-align:left;min-height:145px
-}
+.admin-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.admin-card{background:linear-gradient(145deg,#14263a,#0b1726);border:1px solid #29435d;border-radius:12px;padding:20px;text-align:left;min-height:145px}
 .admin-card .admin-icon{font-size:25px;margin-bottom:12px}
 .admin-card h3{margin:0 0 8px;font-size:16px}
 .admin-card p{font-size:12px;line-height:1.5;margin:0;color:#91a7bb}
-.admin-status{
- display:inline-block;margin-top:13px;color:#38d8f5;
- font-size:10px;font-weight:bold;letter-spacing:1px
-}
+.admin-status{display:inline-block;margin-top:13px;color:#38d8f5;font-size:10px;font-weight:bold;letter-spacing:1px}
 .admin-actions{display:flex;flex-direction:column;gap:10px;margin-top:22px}
-.admin-back{
- background:#172b40;color:white;border:1px solid #38516a;
- border-radius:7px;padding:13px;font-weight:bold
-}
-.admin-logout{
- background:transparent;color:#ff8c8c;border:1px solid #633b49;
- border-radius:7px;padding:12px;font-weight:bold
-}
+.admin-back{background:#172b40;color:white;border:1px solid #38516a;border-radius:7px;padding:13px;font-weight:bold}
+.admin-logout{background:transparent;color:#ff8c8c;border:1px solid #633b49;border-radius:7px;padding:12px;font-weight:bold}
 .admin-divider{border:0;border-top:1px solid #263c51;margin:22px 0}
 .admin-welcome{color:#d8e7f5;font-size:14px;margin-bottom:20px}
-.admin-profile-badge{
- display:inline-block;background:#123b50;color:#38d8f5;
- padding:5px 9px;border-radius:5px;font-size:10px;font-weight:bold;margin-top:10px
-}
+.admin-profile-badge{display:inline-block;background:#123b50;color:#38d8f5;padding:5px 9px;border-radius:5px;font-size:10px;font-weight:bold;margin-top:10px}
+
 @media(max-width:500px){
  h1{font-size:35px}
  .panel{padding:25px 20px}
@@ -151,14 +104,11 @@ p{color:#a9bbce;line-height:1.7}
 <main>
  <h1>MON COMPTE</h1>
  <p>Connecte-toi ou crée ton compte ValthoGame.</p>
- <button class="account-btn" id="mainAccountButton">
-  ACCÉDER À MON COMPTE ↗
- </button>
+ <button class="account-btn" id="mainAccountButton">ACCÉDER À MON COMPTE ↗</button>
 </main>
 
 <div class="modal" id="accountModal">
 <div class="panel">
-
 <button class="close" id="closeModal">×</button>
 
 <section id="choiceView">
@@ -220,8 +170,13 @@ p{color:#a9bbce;line-height:1.7}
    </select>
   </div>
   <div class="field hidden" id="companyField">
-   <label>ENTREPRISE</label>
-   <input id="companyName" placeholder="Nom de ton entreprise">
+   <label>ENTREPRISE À VAL THORENS</label>
+   <div class="company-autocomplete">
+    <input id="companyName" placeholder="Commence à écrire le nom..." autocomplete="off">
+    <input type="hidden" id="companyId">
+    <div class="company-suggestions hidden" id="companySuggestions"></div>
+   </div>
+   <div class="company-hint">Sélectionne ton entreprise dans la liste proposée.</div>
   </div>
   <div class="field">
    <label>ADRESSE EMAIL</label>
@@ -273,8 +228,13 @@ p{color:#a9bbce;line-height:1.7}
    </select>
   </div>
   <div class="field hidden" id="completeCompanyField">
-   <label>ENTREPRISE</label>
-   <input id="completeCompany" placeholder="Nom de ton entreprise">
+   <label>ENTREPRISE À VAL THORENS</label>
+   <div class="company-autocomplete">
+    <input id="completeCompany" placeholder="Commence à écrire le nom..." autocomplete="off">
+    <input type="hidden" id="completeCompanyId">
+    <div class="company-suggestions hidden" id="completeCompanySuggestions"></div>
+   </div>
+   <div class="company-hint">Sélectionne ton entreprise dans la liste proposée.</div>
   </div>
   <button class="primary" type="submit">TERMINER MON INSCRIPTION</button>
  </form>
@@ -386,7 +346,6 @@ p{color:#a9bbce;line-height:1.7}
 </div>
 
 <script>
-
 /* CONFIGURATION */
 
 const SUPABASE_URL = "https://qlnxqmvlvlviqjgpetpt.supabase.co";
@@ -444,20 +403,139 @@ $("backChoice").onclick=()=>showView("choiceView");
 $("backChoice2").onclick=()=>showView("choiceView");
 $("backProfile").onclick=()=>loadProfile();
 
+/* RECHERCHE D'ENTREPRISES DANS SUPABASE */
+
+function escapeHTML(value){
+ return String(value??"").replace(/[&<>"']/g,c=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ }[c]));
+}
+
+function setupCompanyAutocomplete(inputId,hiddenId,suggestionsId){
+ const input=$(inputId);
+ const hidden=$(hiddenId);
+ const suggestions=$(suggestionsId);
+ let searchTimer=null;
+
+ function closeSuggestions(){
+  suggestions.classList.add("hidden");
+  suggestions.innerHTML="";
+ }
+
+ function chooseCompany(company){
+  input.value=company.name;
+  hidden.value=company.id;
+  closeSuggestions();
+ }
+
+ input.addEventListener("input",()=>{
+  hidden.value="";
+  const term=input.value.trim();
+  clearTimeout(searchTimer);
+
+  if(term.length<2){
+   closeSuggestions();
+   return;
+  }
+
+  suggestions.classList.remove("hidden");
+  suggestions.innerHTML='<div class="company-empty">Recherche des entreprises...</div>';
+
+  searchTimer=setTimeout(async()=>{
+   try{
+    const {data,error}=await supabaseClient
+     .from("companies")
+     .select("id,name,category")
+     .eq("active",true)
+     .ilike("name",term+"%")
+     .order("name",{ascending:true})
+     .limit(12);
+
+    if(error)throw error;
+    if(input.value.trim()!==term)return;
+
+    if(!data||data.length===0){
+     suggestions.innerHTML='<div class="company-empty">Aucune entreprise trouvée. Vérifie l’orthographe ou demande son ajout à l’équipe ValthoGame.</div>';
+     suggestions.classList.remove("hidden");
+     return;
+    }
+
+    suggestions.innerHTML=data.map(company=>`
+     <button type="button" class="company-suggestion">
+      <strong>${escapeHTML(company.name)}</strong>
+      <small>${escapeHTML(company.category||"Entreprise")}</small>
+     </button>
+    `).join("");
+
+    suggestions.querySelectorAll(".company-suggestion").forEach((button,index)=>{
+     button.addEventListener("click",()=>chooseCompany(data[index]));
+    });
+
+    suggestions.classList.remove("hidden");
+
+   }catch(error){
+    console.error("Recherche entreprise :",error);
+    suggestions.innerHTML='<div class="company-empty">Impossible de charger les entreprises. Réessaie.</div>';
+    suggestions.classList.remove("hidden");
+   }
+  },250);
+ });
+
+ input.addEventListener("keydown",event=>{
+  if(event.key==="Escape")closeSuggestions();
+ });
+
+ document.addEventListener("click",event=>{
+  if(!input.parentElement.contains(event.target)){
+   closeSuggestions();
+  }
+ });
+
+ return {
+  reset(){
+   input.value="";
+   hidden.value="";
+   closeSuggestions();
+  },
+  set(name){
+   input.value=name||"";
+   hidden.value="";
+   closeSuggestions();
+  }
+ };
+}
+
+const registerCompanyAutocomplete=setupCompanyAutocomplete(
+ "companyName","companyId","companySuggestions"
+);
+
+const completeCompanyAutocomplete=setupCompanyAutocomplete(
+ "completeCompany","completeCompanyId","completeCompanySuggestions"
+);
+
 /* TYPES DE COMPTE */
 
 $("accountType").onchange=()=>{
- $("companyField").classList.toggle("hidden",$("accountType").value!=="seasonal");
+ const seasonal=$("accountType").value==="seasonal";
+ $("companyField").classList.toggle("hidden",!seasonal);
+
+ if(!seasonal){
+  registerCompanyAutocomplete.reset();
+ }
 };
 
 $("completeAccountType").onchange=()=>{
- $("completeCompanyField").classList.toggle("hidden",$("completeAccountType").value!=="seasonal");
+ const seasonal=$("completeAccountType").value==="seasonal";
+ $("completeCompanyField").classList.toggle("hidden",!seasonal);
+
+ if(!seasonal){
+  completeCompanyAutocomplete.reset();
+ }
 };
 
 /* INITIALISATION */
 
 async function initializeSupabase(){
-
  try{
   if(!window.supabase){
    throw new Error("La bibliothèque Supabase n'a pas été chargée.");
@@ -476,7 +554,6 @@ async function initializeSupabase(){
   );
 
   supabaseClient.auth.onAuthStateChange((event,session)=>{
-
    currentUser=session?.user||null;
 
    if(event==="SIGNED_OUT"){
@@ -519,7 +596,6 @@ async function requireClient(){
 /* GOOGLE */
 
 async function googleLogin(){
-
  if(!await requireClient())return;
 
  message("Redirection vers Google...");
@@ -550,7 +626,6 @@ $("googleChoice").onclick=googleLogin;
 /* INSCRIPTION EMAIL */
 
 $("registerForm").addEventListener("submit",async e=>{
-
  e.preventDefault();
  if(!await requireClient())return;
 
@@ -559,9 +634,10 @@ $("registerForm").addEventListener("submit",async e=>{
  const username=$("username").value.trim();
  const accountType=$("accountType").value;
  const companyName=$("companyName").value.trim();
+ const companyId=$("companyId").value;
 
- if(accountType==="seasonal"&&!companyName){
-  message("Indique le nom de ton entreprise.");
+ if(accountType==="seasonal"&&(!companyName||!companyId)){
+  message("Sélectionne une entreprise dans les suggestions.");
   return;
  }
 
@@ -589,6 +665,7 @@ $("registerForm").addEventListener("submit",async e=>{
 
   if(data.session){
    currentUser=data.user;
+
    await saveProfile({
     first_name:firstName,
     last_name:lastName,
@@ -598,6 +675,7 @@ $("registerForm").addEventListener("submit",async e=>{
     account_type:accountType,
     company_name:accountType==="seasonal"?companyName:null
    });
+
   }else{
    message("Compte créé ! Consulte ta boîte mail et clique sur le lien de confirmation pour activer ton compte.");
   }
@@ -611,7 +689,6 @@ $("registerForm").addEventListener("submit",async e=>{
 /* CONNEXION EMAIL */
 
 $("loginForm").addEventListener("submit",async e=>{
-
  e.preventDefault();
  if(!await requireClient())return;
 
@@ -634,16 +711,14 @@ $("loginForm").addEventListener("submit",async e=>{
  }
 });
 
-/* CHARGEMENT PROFIL - VERSION CORRIGÉE */
+/* CHARGEMENT PROFIL */
 
 async function loadProfile(){
-
- if(!currentUser || !await requireClient())return;
+ if(!currentUser||!await requireClient())return;
 
  message("Chargement de ton espace personnel...");
 
  try{
-
   const userId=currentUser.id;
 
   const {data,error}=await supabaseClient
@@ -681,7 +756,6 @@ async function loadProfile(){
 /* COMPLETER PROFIL */
 
 function showCompleteForm(profile={}){
-
  const metadata=currentUser?.user_metadata||{};
 
  $("googleEmail").value=currentUser?.email||"";
@@ -691,10 +765,12 @@ function showCompleteForm(profile={}){
  $("completeBirthDate").value=profile.birth_date||metadata.birth_date||"";
  $("completePhone").value=profile.phone||metadata.phone||"";
  $("completeAccountType").value=profile.account_type||metadata.account_type||"public";
- $("completeCompany").value=profile.company_name||metadata.company_name||"";
+
+ completeCompanyAutocomplete.set(profile.company_name||metadata.company_name||"");
 
  $("completeCompanyField").classList.toggle(
-  "hidden",$("completeAccountType").value!=="seasonal"
+  "hidden",
+  $("completeAccountType").value!=="seasonal"
  );
 
  showView("completeView");
@@ -703,13 +779,11 @@ function showCompleteForm(profile={}){
 /* ENREGISTRER PROFIL */
 
 async function saveProfile(profileData){
-
  if(!currentUser||!await requireClient())return;
 
  message("Enregistrement de ton profil...");
 
  try{
-
   const payload={
    id:currentUser.id,
    first_name:profileData.first_name,
@@ -721,7 +795,7 @@ async function saveProfile(profileData){
    company_name:profileData.company_name||null
   };
 
-  /* Le rôle admin n'est jamais modifié depuis le navigateur. */
+  /* Le rôle administrateur n'est jamais modifié depuis le navigateur. */
 
   const {error}=await supabaseClient
    .from("profiles")
@@ -746,18 +820,18 @@ async function saveProfile(profileData){
  }
 }
 
-/* FINALISER INSCRIPTION */
+/* FINALISER INSCRIPTION GOOGLE */
 
 $("completeForm").addEventListener("submit",async e=>{
-
  e.preventDefault();
  if(!currentUser)return;
 
  const accountType=$("completeAccountType").value;
  const companyName=$("completeCompany").value.trim();
+ const companyId=$("completeCompanyId").value;
 
- if(accountType==="seasonal"&&!companyName){
-  message("Indique le nom de ton entreprise.");
+ if(accountType==="seasonal"&&(!companyName||!companyId)){
+  message("Sélectionne une entreprise dans les suggestions.");
   return;
  }
 
@@ -774,18 +848,7 @@ $("completeForm").addEventListener("submit",async e=>{
 
 /* AFFICHAGE PROFIL */
 
-function escapeHTML(value){
- return String(value).replace(/[&<>"']/g,c=>({
-  "&":"&amp;",
-  "<":"&lt;",
-  ">":"&gt;",
-  '"':"&quot;",
-  "'":"&#39;"
- }[c]));
-}
-
 function renderProfile(data){
-
  const rows=[
   ["Prénom",data.first_name],
   ["Nom",data.last_name],
@@ -813,8 +876,6 @@ function renderProfile(data){
  $("editPhone").value=data.phone||"";
  $("editBirthDate").value=data.birth_date||"";
 
- /* Vérification du rôle administrateur */
-
  const isAdmin=String(data.role||"").trim().toLowerCase()==="admin";
 
  console.log("Vérification admin :",isAdmin);
@@ -828,13 +889,11 @@ function renderProfile(data){
 /* ACCÈS ADMINISTRATEUR */
 
 async function openAdminPanel(){
-
  if(!currentUser||!await requireClient())return;
 
  message("Vérification des droits administrateur...");
 
  try{
-
   const {data,error}=await supabaseClient
    .from("profiles")
    .select("role")
@@ -864,12 +923,10 @@ $("adminButton").onclick=openAdminPanel;
 /* RETOUR AU PROFIL */
 
 $("backToProfile").onclick=()=>{
-
  if(!currentUser||currentProfile?.role!=="admin"){
   showView("choiceView");
   return;
  }
-
  renderProfile(currentProfile);
 };
 
@@ -878,7 +935,6 @@ $("backToProfile").onclick=()=>{
 $("editProfile").onclick=()=>showView("editView");
 
 $("editForm").addEventListener("submit",async e=>{
-
  e.preventDefault();
  if(!currentUser)return;
 
@@ -896,7 +952,6 @@ $("editForm").addEventListener("submit",async e=>{
 /* DECONNEXION */
 
 async function logout(){
-
  if(!await requireClient())return;
 
  message("Déconnexion...");
@@ -922,7 +977,6 @@ $("adminLogout").onclick=logout;
 /* DEMARRAGE */
 
 initializeSupabase();
-
 </script>
 </body>
 </html>
