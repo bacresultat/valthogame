@@ -84,151 +84,54 @@ p{color:#a9bbce;line-height:1.7}
 
 /* ESPACE ADMIN */
 
-.admin-area{
- width:100%;
- max-width:100%;
-}
-
+.admin-area{width:100%;max-width:100%}
 .admin-top{
- display:flex;
- justify-content:space-between;
- align-items:center;
- gap:15px;
- margin-bottom:25px;
+ display:flex;justify-content:space-between;
+ align-items:center;gap:15px;margin-bottom:25px
 }
-
 .admin-tag{
- display:inline-block;
- background:#123b50;
- color:#38d8f5;
- border:1px solid #23617a;
- border-radius:6px;
- padding:7px 11px;
- font-size:11px;
- font-weight:900;
- letter-spacing:1.5px;
+ display:inline-block;background:#123b50;color:#38d8f5;
+ border:1px solid #23617a;border-radius:6px;
+ padding:7px 11px;font-size:11px;font-weight:900;letter-spacing:1.5px
 }
-
-.admin-title{
- font-size:30px!important;
- margin:13px 0 5px!important;
-}
-
-.admin-subtitle{
- color:#91a7bb;
- font-size:13px;
- margin:0;
-}
-
+.admin-title{font-size:30px!important;margin:13px 0 5px!important}
+.admin-subtitle{color:#91a7bb;font-size:13px;margin:0}
 .admin-account{
- background:#0b1827;
- border:1px solid #29435d;
- border-radius:12px;
- padding:15px;
- text-align:left;
- margin-bottom:22px;
+ background:#0b1827;border:1px solid #29435d;
+ border-radius:12px;padding:15px;text-align:left;margin-bottom:22px
 }
-
-.admin-account small{
- color:#91a7bb;
- display:block;
- margin-bottom:6px;
-}
-
-.admin-account strong{
- color:#38d8f5;
- overflow-wrap:anywhere;
-}
-
+.admin-account small{color:#91a7bb;display:block;margin-bottom:6px}
+.admin-account strong{color:#38d8f5;overflow-wrap:anywhere}
 .admin-grid{
- display:grid;
- grid-template-columns:repeat(2,minmax(0,1fr));
- gap:13px;
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px
 }
-
 .admin-card{
  background:linear-gradient(145deg,#14263a,#0b1726);
- border:1px solid #29435d;
- border-radius:12px;
- padding:20px;
- text-align:left;
- min-height:145px;
+ border:1px solid #29435d;border-radius:12px;
+ padding:20px;text-align:left;min-height:145px
 }
-
-.admin-card .admin-icon{
- font-size:25px;
- margin-bottom:12px;
-}
-
-.admin-card h3{
- margin:0 0 8px;
- font-size:16px;
-}
-
-.admin-card p{
- font-size:12px;
- line-height:1.5;
- margin:0;
- color:#91a7bb;
-}
-
+.admin-card .admin-icon{font-size:25px;margin-bottom:12px}
+.admin-card h3{margin:0 0 8px;font-size:16px}
+.admin-card p{font-size:12px;line-height:1.5;margin:0;color:#91a7bb}
 .admin-status{
- display:inline-block;
- margin-top:13px;
- color:#38d8f5;
- font-size:10px;
- font-weight:bold;
- letter-spacing:1px;
+ display:inline-block;margin-top:13px;color:#38d8f5;
+ font-size:10px;font-weight:bold;letter-spacing:1px
 }
-
-.admin-actions{
- display:flex;
- flex-direction:column;
- gap:10px;
- margin-top:22px;
-}
-
+.admin-actions{display:flex;flex-direction:column;gap:10px;margin-top:22px}
 .admin-back{
- background:#172b40;
- color:white;
- border:1px solid #38516a;
- border-radius:7px;
- padding:13px;
- font-weight:bold;
+ background:#172b40;color:white;border:1px solid #38516a;
+ border-radius:7px;padding:13px;font-weight:bold
 }
-
 .admin-logout{
- background:transparent;
- color:#ff8c8c;
- border:1px solid #633b49;
- border-radius:7px;
- padding:12px;
- font-weight:bold;
+ background:transparent;color:#ff8c8c;border:1px solid #633b49;
+ border-radius:7px;padding:12px;font-weight:bold
 }
-
-.admin-divider{
- border:0;
- border-top:1px solid #263c51;
- margin:22px 0;
-}
-
-.admin-welcome{
- color:#d8e7f5;
- font-size:14px;
- margin-bottom:20px;
-}
-
+.admin-divider{border:0;border-top:1px solid #263c51;margin:22px 0}
+.admin-welcome{color:#d8e7f5;font-size:14px;margin-bottom:20px}
 .admin-profile-badge{
- display:inline-block;
- background:#123b50;
- color:#38d8f5;
- padding:5px 9px;
- border-radius:5px;
- font-size:10px;
- font-weight:bold;
- margin-top:10px;
+ display:inline-block;background:#123b50;color:#38d8f5;
+ padding:5px 9px;border-radius:5px;font-size:10px;font-weight:bold;margin-top:10px
 }
-
 @media(max-width:500px){
  h1{font-size:35px}
  .panel{padding:25px 20px}
@@ -258,8 +161,6 @@ p{color:#a9bbce;line-height:1.7}
 
 <button class="close" id="closeModal">×</button>
 
-<!-- CHOIX -->
-
 <section id="choiceView">
  <h2>Bienvenue !</h2>
  <p class="subtitle">Accède à ton espace ValthoGame.</p>
@@ -267,8 +168,6 @@ p{color:#a9bbce;line-height:1.7}
  <button class="secondary" id="showRegister">CRÉER UN COMPTE</button>
  <button class="google" id="googleChoice"><span>G</span> CONTINUER AVEC GOOGLE</button>
 </section>
-
-<!-- CONNEXION -->
 
 <section id="loginView" class="hidden">
  <h2>Connexion</h2>
@@ -289,38 +188,30 @@ p{color:#a9bbce;line-height:1.7}
  <div class="link" id="backChoice">← Retour</div>
 </section>
 
-<!-- INSCRIPTION -->
-
 <section id="registerView" class="hidden">
  <h2>Créer un compte</h2>
  <p class="subtitle">Rejoins l'aventure ValthoGame.</p>
  <form id="registerForm">
-
   <div class="field">
    <label>PRÉNOM</label>
    <input id="firstName" required autocomplete="given-name">
   </div>
-
   <div class="field">
    <label>NOM</label>
    <input id="lastName" required autocomplete="family-name">
   </div>
-
   <div class="field">
    <label>PSEUDO</label>
    <input id="username" required minlength="3" maxlength="24">
   </div>
-
   <div class="field">
    <label>DATE DE NAISSANCE (FACULTATIF)</label>
    <input type="date" id="birthDate">
   </div>
-
   <div class="field">
    <label>TÉLÉPHONE (FACULTATIF)</label>
    <input type="tel" id="phone">
   </div>
-
   <div class="field">
    <label>TYPE DE COMPTE</label>
    <select id="accountType">
@@ -328,66 +219,52 @@ p{color:#a9bbce;line-height:1.7}
     <option value="seasonal">Saisonnier</option>
    </select>
   </div>
-
   <div class="field hidden" id="companyField">
    <label>ENTREPRISE</label>
    <input id="companyName" placeholder="Nom de ton entreprise">
   </div>
-
   <div class="field">
    <label>ADRESSE EMAIL</label>
    <input type="email" id="registerEmail" required autocomplete="email">
   </div>
-
   <div class="field">
    <label>MOT DE PASSE (8 CARACTÈRES MINIMUM)</label>
    <input type="password" id="registerPassword" required minlength="8" autocomplete="new-password">
   </div>
-
   <button class="primary" type="submit">CRÉER MON COMPTE</button>
  </form>
  <div class="link" id="goLogin">Déjà inscrit ? Se connecter</div>
  <div class="link" id="backChoice2">← Retour</div>
 </section>
 
-<!-- COMPLETER PROFIL -->
-
 <section id="completeView" class="hidden">
  <h2>Bienvenue sur ValthoGame !</h2>
  <p class="subtitle">Complète ton profil pour accéder à ton espace personnel.</p>
-
  <form id="completeForm">
-
   <div class="field">
    <label>ADRESSE EMAIL</label>
    <input id="googleEmail" disabled>
   </div>
-
   <div class="field">
    <label>PRÉNOM</label>
    <input id="completeFirstName" required>
   </div>
-
   <div class="field">
    <label>NOM</label>
    <input id="completeLastName" required>
   </div>
-
   <div class="field">
    <label>PSEUDO</label>
    <input id="completeUsername" required minlength="3" maxlength="24">
   </div>
-
   <div class="field">
    <label>DATE DE NAISSANCE (FACULTATIF)</label>
    <input type="date" id="completeBirthDate">
   </div>
-
   <div class="field">
    <label>TÉLÉPHONE (FACULTATIF)</label>
    <input type="tel" id="completePhone">
   </div>
-
   <div class="field">
    <label>TYPE DE COMPTE</label>
    <select id="completeAccountType">
@@ -395,34 +272,23 @@ p{color:#a9bbce;line-height:1.7}
     <option value="seasonal">Saisonnier</option>
    </select>
   </div>
-
   <div class="field hidden" id="completeCompanyField">
    <label>ENTREPRISE</label>
    <input id="completeCompany" placeholder="Nom de ton entreprise">
   </div>
-
   <button class="primary" type="submit">TERMINER MON INSCRIPTION</button>
  </form>
-
  <p class="note">Tes informations personnelles ne seront pas affichées publiquement dans les classements.</p>
 </section>
-
-<!-- PROFIL -->
 
 <section id="profileView" class="hidden">
  <h2>Mon profil</h2>
  <p class="subtitle">Bienvenue dans ton espace personnel.</p>
  <div id="profileDetails"></div>
-
- <button class="primary hidden" id="adminButton">
-  ACCÉDER À L'ADMINISTRATION ↗
- </button>
-
+ <button class="primary hidden" id="adminButton">ACCÉDER À L'ADMINISTRATION ↗</button>
  <button class="secondary" id="editProfile">MODIFIER MON PROFIL</button>
  <button class="secondary" id="logoutButton">ME DÉCONNECTER</button>
 </section>
-
-<!-- MODIFICATION -->
 
 <section id="editView" class="hidden">
  <h2>Modifier mon profil</h2>
@@ -452,12 +318,8 @@ p{color:#a9bbce;line-height:1.7}
  <div class="link" id="backProfile">← Retour au profil</div>
 </section>
 
-<!-- ESPACE ADMINISTRATEUR -->
-
 <section id="adminView" class="hidden">
-
  <div class="admin-area">
-
   <div class="admin-top">
    <div>
     <span class="admin-tag">CONTROL CENTER</span>
@@ -466,82 +328,60 @@ p{color:#a9bbce;line-height:1.7}
    </div>
    <span class="admin-tag">ADMIN</span>
   </div>
-
-  <p class="admin-welcome">
-   Bienvenue dans ton espace administrateur.
-  </p>
-
+  <p class="admin-welcome">Bienvenue dans ton espace administrateur.</p>
   <div class="admin-account">
    <small>Connecté en tant que</small>
    <strong id="adminEmail"></strong>
    <br>
    <span class="admin-profile-badge">ADMINISTRATEUR</span>
   </div>
-
   <div class="admin-grid">
-
    <div class="admin-card">
     <div class="admin-icon">👥</div>
     <h3>Utilisateurs</h3>
     <p>Gestion des comptes, profils et membres de ValthoGame.</p>
     <span class="admin-status">MODULE À DÉVELOPPER</span>
    </div>
-
    <div class="admin-card">
     <div class="admin-icon">🎯</div>
     <h3>Challenges</h3>
     <p>Création, modification et suivi des challenges.</p>
     <span class="admin-status">MODULE À DÉVELOPPER</span>
    </div>
-
    <div class="admin-card">
     <div class="admin-icon">📊</div>
     <h3>Statistiques</h3>
     <p>Activité, inscriptions et performances de la plateforme.</p>
     <span class="admin-status">MODULE À DÉVELOPPER</span>
    </div>
-
    <div class="admin-card">
     <div class="admin-icon">🏆</div>
     <h3>Classements</h3>
     <p>Suivi des classements et des résultats des participants.</p>
     <span class="admin-status">MODULE À DÉVELOPPER</span>
    </div>
-
    <div class="admin-card">
     <div class="admin-icon">🏢</div>
     <h3>Entreprises</h3>
     <p>Gestion des équipes saisonnières et des entreprises.</p>
     <span class="admin-status">MODULE À DÉVELOPPER</span>
    </div>
-
    <div class="admin-card">
     <div class="admin-icon">⚙️</div>
     <h3>Paramètres</h3>
     <p>Configuration générale de ValthoGame.</p>
     <span class="admin-status">MODULE À DÉVELOPPER</span>
    </div>
-
   </div>
-
   <hr class="admin-divider">
-
   <div class="admin-actions">
-   <button class="admin-back" id="backToProfile">
-    ← RETOUR À MON PROFIL
-   </button>
-
-   <button class="admin-logout" id="adminLogout">
-    SE DÉCONNECTER
-   </button>
+   <button class="admin-back" id="backToProfile">← RETOUR À MON PROFIL</button>
+   <button class="admin-logout" id="adminLogout">SE DÉCONNECTER</button>
   </div>
-
  </div>
-
 </section>
 
 <div class="message" id="statusMessage"></div>
-
 </div>
 </div>
 
@@ -551,7 +391,6 @@ p{color:#a9bbce;line-height:1.7}
 
 const SUPABASE_URL = "https://qlnxqmvlvlviqjgpetpt.supabase.co";
 const SUPABASE_KEY = "sb_publishable_SXVwp09CpybRw1n6kwe4nA__qW1HqlS";
-
 const REDIRECT_URL = "https://valthogame.com/";
 
 let supabaseClient = null;
@@ -567,25 +406,17 @@ function message(text){
 }
 
 function showView(view){
-
  [
-  "choiceView",
-  "loginView",
-  "registerView",
-  "completeView",
-  "profileView",
-  "editView",
-  "adminView"
+  "choiceView","loginView","registerView","completeView",
+  "profileView","editView","adminView"
  ].forEach(id=>{
   $(id).classList.toggle("hidden",id!==view);
  });
-
  message("");
 }
 
 function openModal(){
  $("accountModal").classList.add("open");
-
  if(currentUser){
   loadProfile();
  }else{
@@ -616,17 +447,11 @@ $("backProfile").onclick=()=>loadProfile();
 /* TYPES DE COMPTE */
 
 $("accountType").onchange=()=>{
- $("companyField").classList.toggle(
-  "hidden",
-  $("accountType").value!=="seasonal"
- );
+ $("companyField").classList.toggle("hidden",$("accountType").value!=="seasonal");
 };
 
 $("completeAccountType").onchange=()=>{
- $("completeCompanyField").classList.toggle(
-  "hidden",
-  $("completeAccountType").value!=="seasonal"
- );
+ $("completeCompanyField").classList.toggle("hidden",$("completeAccountType").value!=="seasonal");
 };
 
 /* INITIALISATION */
@@ -634,7 +459,6 @@ $("completeAccountType").onchange=()=>{
 async function initializeSupabase(){
 
  try{
-
   if(!window.supabase){
    throw new Error("La bibliothèque Supabase n'a pas été chargée.");
   }
@@ -662,20 +486,14 @@ async function initializeSupabase(){
     return;
    }
 
-   if(
-    event==="SIGNED_IN"||
-    event==="INITIAL_SESSION"||
-    event==="USER_UPDATED"
-   ){
+   if(["SIGNED_IN","INITIAL_SESSION","USER_UPDATED"].includes(event)){
     if(currentUser){
      Promise.resolve().then(()=>loadProfile());
     }
    }
-
   });
 
   const {data,error}=await supabaseClient.auth.getSession();
-
   if(error)throw error;
 
   currentUser=data.session?.user||null;
@@ -691,12 +509,10 @@ async function initializeSupabase(){
 }
 
 async function requireClient(){
-
  if(!supabaseClient){
   message("Supabase n'est pas initialisé. Recharge la page.");
   return false;
  }
-
  return true;
 }
 
@@ -709,7 +525,6 @@ async function googleLogin(){
  message("Redirection vers Google...");
 
  try{
-
   const {error}=await supabaseClient.auth.signInWithOAuth({
    provider:"google",
    options:{
@@ -737,7 +552,6 @@ $("googleChoice").onclick=googleLogin;
 $("registerForm").addEventListener("submit",async e=>{
 
  e.preventDefault();
-
  if(!await requireClient())return;
 
  const firstName=$("firstName").value.trim();
@@ -754,16 +568,11 @@ $("registerForm").addEventListener("submit",async e=>{
  message("Création de ton compte...");
 
  try{
-
   const {data,error}=await supabaseClient.auth.signUp({
-
    email:$("registerEmail").value.trim(),
-
    password:$("registerPassword").value,
-
    options:{
     emailRedirectTo:REDIRECT_URL,
-
     data:{
      first_name:firstName,
      last_name:lastName,
@@ -774,15 +583,12 @@ $("registerForm").addEventListener("submit",async e=>{
      company_name:accountType==="seasonal"?companyName:null
     }
    }
-
   });
 
   if(error)throw error;
 
   if(data.session){
-
    currentUser=data.user;
-
    await saveProfile({
     first_name:firstName,
     last_name:lastName,
@@ -792,18 +598,14 @@ $("registerForm").addEventListener("submit",async e=>{
     account_type:accountType,
     company_name:accountType==="seasonal"?companyName:null
    });
-
   }else{
-
    message("Compte créé ! Consulte ta boîte mail et clique sur le lien de confirmation pour activer ton compte.");
-
   }
 
  }catch(error){
   console.error(error);
   message("Erreur d'inscription : "+error.message);
  }
-
 });
 
 /* CONNEXION EMAIL */
@@ -811,13 +613,11 @@ $("registerForm").addEventListener("submit",async e=>{
 $("loginForm").addEventListener("submit",async e=>{
 
  e.preventDefault();
-
  if(!await requireClient())return;
 
  message("Connexion en cours...");
 
  try{
-
   const {data,error}=await supabaseClient.auth.signInWithPassword({
    email:$("loginEmail").value.trim(),
    password:$("loginPassword").value
@@ -826,42 +626,46 @@ $("loginForm").addEventListener("submit",async e=>{
   if(error)throw error;
 
   currentUser=data.user;
-
   await loadProfile();
 
  }catch(error){
   console.error(error);
   message("Erreur de connexion : "+error.message);
  }
-
 });
 
-/* CHARGEMENT PROFIL */
+/* CHARGEMENT PROFIL - VERSION CORRIGÉE */
 
 async function loadProfile(){
 
- if(!currentUser||!await requireClient())return;
+ if(!currentUser || !await requireClient())return;
 
  message("Chargement de ton espace personnel...");
 
  try{
 
+  const userId=currentUser.id;
+
   const {data,error}=await supabaseClient
    .from("profiles")
-   .select("*")
-   .eq("id",currentUser.id)
+   .select("id,first_name,last_name,username,birth_date,phone,account_type,company_name,role")
+   .eq("id",userId)
    .maybeSingle();
 
   if(error)throw error;
 
+  if(!data){
+   currentProfile=null;
+   showCompleteForm({});
+   return;
+  }
+
   currentProfile=data;
 
-  if(
-   !data||
-   !data.first_name||
-   !data.last_name||
-   !data.username
-  ){
+  console.log("PROFIL CHARGÉ :",data);
+  console.log("RÔLE UTILISATEUR :",data.role);
+
+  if(!data.first_name||!data.last_name||!data.username){
    showCompleteForm(data);
    return;
   }
@@ -872,7 +676,6 @@ async function loadProfile(){
   console.error(error);
   message("Impossible de charger ton profil : "+error.message);
  }
-
 }
 
 /* COMPLETER PROFIL */
@@ -882,31 +685,16 @@ function showCompleteForm(profile={}){
  const metadata=currentUser?.user_metadata||{};
 
  $("googleEmail").value=currentUser?.email||"";
-
- $("completeFirstName").value=
-  profile.first_name||metadata.first_name||metadata.given_name||"";
-
- $("completeLastName").value=
-  profile.last_name||metadata.last_name||metadata.family_name||"";
-
- $("completeUsername").value=
-  profile.username||metadata.username||"";
-
- $("completeBirthDate").value=
-  profile.birth_date||metadata.birth_date||"";
-
- $("completePhone").value=
-  profile.phone||metadata.phone||"";
-
- $("completeAccountType").value=
-  profile.account_type||metadata.account_type||"public";
-
- $("completeCompany").value=
-  profile.company_name||metadata.company_name||"";
+ $("completeFirstName").value=profile.first_name||metadata.first_name||metadata.given_name||"";
+ $("completeLastName").value=profile.last_name||metadata.last_name||metadata.family_name||"";
+ $("completeUsername").value=profile.username||metadata.username||"";
+ $("completeBirthDate").value=profile.birth_date||metadata.birth_date||"";
+ $("completePhone").value=profile.phone||metadata.phone||"";
+ $("completeAccountType").value=profile.account_type||metadata.account_type||"public";
+ $("completeCompany").value=profile.company_name||metadata.company_name||"";
 
  $("completeCompanyField").classList.toggle(
-  "hidden",
-  $("completeAccountType").value!=="seasonal"
+  "hidden",$("completeAccountType").value!=="seasonal"
  );
 
  showView("completeView");
@@ -933,11 +721,7 @@ async function saveProfile(profileData){
    company_name:profileData.company_name||null
   };
 
-  /*
-   Important :
-   On ne transmet jamais le champ role depuis le navigateur.
-   Supabase conserve donc le rôle existant.
-  */
+  /* Le rôle admin n'est jamais modifié depuis le navigateur. */
 
   const {error}=await supabaseClient
    .from("profiles")
@@ -954,14 +738,12 @@ async function saveProfile(profileData){
   if(readError)throw readError;
 
   currentProfile=updatedProfile;
-
   renderProfile(updatedProfile);
 
  }catch(error){
   console.error(error);
   message("Erreur lors de l'enregistrement : "+error.message);
  }
-
 }
 
 /* FINALISER INSCRIPTION */
@@ -969,7 +751,6 @@ async function saveProfile(profileData){
 $("completeForm").addEventListener("submit",async e=>{
 
  e.preventDefault();
-
  if(!currentUser)return;
 
  const accountType=$("completeAccountType").value;
@@ -981,7 +762,6 @@ $("completeForm").addEventListener("submit",async e=>{
  }
 
  await saveProfile({
-
   first_name:$("completeFirstName").value.trim(),
   last_name:$("completeLastName").value.trim(),
   username:$("completeUsername").value.trim(),
@@ -989,15 +769,12 @@ $("completeForm").addEventListener("submit",async e=>{
   phone:$("completePhone").value.trim()||null,
   account_type:accountType,
   company_name:accountType==="seasonal"?companyName:null
-
  });
-
 });
 
 /* AFFICHAGE PROFIL */
 
 function escapeHTML(value){
-
  return String(value).replace(/[&<>"']/g,c=>({
   "&":"&amp;",
   "<":"&lt;",
@@ -1005,7 +782,6 @@ function escapeHTML(value){
   '"':"&quot;",
   "'":"&#39;"
  }[c]));
-
 }
 
 function renderProfile(data){
@@ -1037,9 +813,12 @@ function renderProfile(data){
  $("editPhone").value=data.phone||"";
  $("editBirthDate").value=data.birth_date||"";
 
- /* Affichage conditionnel du bouton admin */
+ /* Vérification du rôle administrateur */
 
- const isAdmin=data.role==="admin";
+ const isAdmin=String(data.role||"").trim().toLowerCase()==="admin";
+
+ console.log("Vérification admin :",isAdmin);
+ console.log("Rôle reçu :",data.role);
 
  $("adminButton").classList.toggle("hidden",!isAdmin);
 
@@ -1056,11 +835,6 @@ async function openAdminPanel(){
 
  try{
 
-  /*
-   On relit le rôle dans Supabase au moment
-   de chaque ouverture du tableau de bord.
-  */
-
   const {data,error}=await supabaseClient
    .from("profiles")
    .select("role")
@@ -1069,29 +843,25 @@ async function openAdminPanel(){
 
   if(error)throw error;
 
-  if(data.role!=="admin"){
+  if(String(data.role||"").trim().toLowerCase()!=="admin"){
    message("Accès refusé : tu n'es pas administrateur.");
    showView("profileView");
    return;
   }
 
   $("adminEmail").textContent=currentUser.email||"";
-
   showView("adminView");
 
  }catch(error){
-
   console.error(error);
   showView("profileView");
   message("Impossible de vérifier tes droits : "+error.message);
-
  }
-
 }
 
 $("adminButton").onclick=openAdminPanel;
 
-/* RETOUR AU PROFIL DEPUIS ADMIN */
+/* RETOUR AU PROFIL */
 
 $("backToProfile").onclick=()=>{
 
@@ -1101,7 +871,6 @@ $("backToProfile").onclick=()=>{
  }
 
  renderProfile(currentProfile);
-
 };
 
 /* MODIFIER PROFIL */
@@ -1111,11 +880,9 @@ $("editProfile").onclick=()=>showView("editView");
 $("editForm").addEventListener("submit",async e=>{
 
  e.preventDefault();
-
  if(!currentUser)return;
 
  await saveProfile({
-
   first_name:$("editFirstName").value.trim(),
   last_name:$("editLastName").value.trim(),
   username:$("editUsername").value.trim(),
@@ -1123,9 +890,7 @@ $("editForm").addEventListener("submit",async e=>{
   birth_date:$("editBirthDate").value||null,
   account_type:currentProfile?.account_type||"public",
   company_name:currentProfile?.company_name||null
-
  });
-
 });
 
 /* DECONNEXION */
@@ -1147,11 +912,8 @@ async function logout(){
  currentProfile=null;
 
  $("adminButton").classList.add("hidden");
-
  showView("choiceView");
-
  message("Tu es déconnecté.");
-
 }
 
 $("logoutButton").onclick=logout;
