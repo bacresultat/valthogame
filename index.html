@@ -81,9 +81,159 @@ p{color:#a9bbce;line-height:1.7}
 .profile-line small{display:block;color:#91a7bb;margin-bottom:5px}
 .profile-line strong{font-size:15px;overflow-wrap:anywhere}
 .note{color:#91a7bb;font-size:12px;line-height:1.5;margin-top:15px}
+
+/* ESPACE ADMIN */
+
+.admin-area{
+ width:100%;
+ max-width:100%;
+}
+
+.admin-top{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:15px;
+ margin-bottom:25px;
+}
+
+.admin-tag{
+ display:inline-block;
+ background:#123b50;
+ color:#38d8f5;
+ border:1px solid #23617a;
+ border-radius:6px;
+ padding:7px 11px;
+ font-size:11px;
+ font-weight:900;
+ letter-spacing:1.5px;
+}
+
+.admin-title{
+ font-size:30px!important;
+ margin:13px 0 5px!important;
+}
+
+.admin-subtitle{
+ color:#91a7bb;
+ font-size:13px;
+ margin:0;
+}
+
+.admin-account{
+ background:#0b1827;
+ border:1px solid #29435d;
+ border-radius:12px;
+ padding:15px;
+ text-align:left;
+ margin-bottom:22px;
+}
+
+.admin-account small{
+ color:#91a7bb;
+ display:block;
+ margin-bottom:6px;
+}
+
+.admin-account strong{
+ color:#38d8f5;
+ overflow-wrap:anywhere;
+}
+
+.admin-grid{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:13px;
+}
+
+.admin-card{
+ background:linear-gradient(145deg,#14263a,#0b1726);
+ border:1px solid #29435d;
+ border-radius:12px;
+ padding:20px;
+ text-align:left;
+ min-height:145px;
+}
+
+.admin-card .admin-icon{
+ font-size:25px;
+ margin-bottom:12px;
+}
+
+.admin-card h3{
+ margin:0 0 8px;
+ font-size:16px;
+}
+
+.admin-card p{
+ font-size:12px;
+ line-height:1.5;
+ margin:0;
+ color:#91a7bb;
+}
+
+.admin-status{
+ display:inline-block;
+ margin-top:13px;
+ color:#38d8f5;
+ font-size:10px;
+ font-weight:bold;
+ letter-spacing:1px;
+}
+
+.admin-actions{
+ display:flex;
+ flex-direction:column;
+ gap:10px;
+ margin-top:22px;
+}
+
+.admin-back{
+ background:#172b40;
+ color:white;
+ border:1px solid #38516a;
+ border-radius:7px;
+ padding:13px;
+ font-weight:bold;
+}
+
+.admin-logout{
+ background:transparent;
+ color:#ff8c8c;
+ border:1px solid #633b49;
+ border-radius:7px;
+ padding:12px;
+ font-weight:bold;
+}
+
+.admin-divider{
+ border:0;
+ border-top:1px solid #263c51;
+ margin:22px 0;
+}
+
+.admin-welcome{
+ color:#d8e7f5;
+ font-size:14px;
+ margin-bottom:20px;
+}
+
+.admin-profile-badge{
+ display:inline-block;
+ background:#123b50;
+ color:#38d8f5;
+ padding:5px 9px;
+ border-radius:5px;
+ font-size:10px;
+ font-weight:bold;
+ margin-top:10px;
+}
+
 @media(max-width:500px){
  h1{font-size:35px}
  .panel{padding:25px 20px}
+ .admin-grid{grid-template-columns:1fr}
+ .admin-title{font-size:25px!important}
 }
 </style>
 </head>
@@ -109,6 +259,7 @@ p{color:#a9bbce;line-height:1.7}
 <button class="close" id="closeModal">×</button>
 
 <!-- CHOIX -->
+
 <section id="choiceView">
  <h2>Bienvenue !</h2>
  <p class="subtitle">Accède à ton espace ValthoGame.</p>
@@ -118,6 +269,7 @@ p{color:#a9bbce;line-height:1.7}
 </section>
 
 <!-- CONNEXION -->
+
 <section id="loginView" class="hidden">
  <h2>Connexion</h2>
  <p class="subtitle">Retrouve ton compte ValthoGame.</p>
@@ -138,6 +290,7 @@ p{color:#a9bbce;line-height:1.7}
 </section>
 
 <!-- INSCRIPTION -->
+
 <section id="registerView" class="hidden">
  <h2>Créer un compte</h2>
  <p class="subtitle">Rejoins l'aventure ValthoGame.</p>
@@ -198,6 +351,7 @@ p{color:#a9bbce;line-height:1.7}
 </section>
 
 <!-- COMPLETER PROFIL -->
+
 <section id="completeView" class="hidden">
  <h2>Bienvenue sur ValthoGame !</h2>
  <p class="subtitle">Complète ton profil pour accéder à ton espace personnel.</p>
@@ -254,15 +408,22 @@ p{color:#a9bbce;line-height:1.7}
 </section>
 
 <!-- PROFIL -->
+
 <section id="profileView" class="hidden">
  <h2>Mon profil</h2>
  <p class="subtitle">Bienvenue dans ton espace personnel.</p>
  <div id="profileDetails"></div>
- <button class="primary" id="editProfile">MODIFIER MON PROFIL</button>
+
+ <button class="primary hidden" id="adminButton">
+  ACCÉDER À L'ADMINISTRATION ↗
+ </button>
+
+ <button class="secondary" id="editProfile">MODIFIER MON PROFIL</button>
  <button class="secondary" id="logoutButton">ME DÉCONNECTER</button>
 </section>
 
 <!-- MODIFICATION -->
+
 <section id="editView" class="hidden">
  <h2>Modifier mon profil</h2>
  <form id="editForm">
@@ -291,12 +452,101 @@ p{color:#a9bbce;line-height:1.7}
  <div class="link" id="backProfile">← Retour au profil</div>
 </section>
 
+<!-- ESPACE ADMINISTRATEUR -->
+
+<section id="adminView" class="hidden">
+
+ <div class="admin-area">
+
+  <div class="admin-top">
+   <div>
+    <span class="admin-tag">CONTROL CENTER</span>
+    <h2 class="admin-title">Administration</h2>
+    <p class="admin-subtitle">Gestion de la plateforme ValthoGame.</p>
+   </div>
+   <span class="admin-tag">ADMIN</span>
+  </div>
+
+  <p class="admin-welcome">
+   Bienvenue dans ton espace administrateur.
+  </p>
+
+  <div class="admin-account">
+   <small>Connecté en tant que</small>
+   <strong id="adminEmail"></strong>
+   <br>
+   <span class="admin-profile-badge">ADMINISTRATEUR</span>
+  </div>
+
+  <div class="admin-grid">
+
+   <div class="admin-card">
+    <div class="admin-icon">👥</div>
+    <h3>Utilisateurs</h3>
+    <p>Gestion des comptes, profils et membres de ValthoGame.</p>
+    <span class="admin-status">MODULE À DÉVELOPPER</span>
+   </div>
+
+   <div class="admin-card">
+    <div class="admin-icon">🎯</div>
+    <h3>Challenges</h3>
+    <p>Création, modification et suivi des challenges.</p>
+    <span class="admin-status">MODULE À DÉVELOPPER</span>
+   </div>
+
+   <div class="admin-card">
+    <div class="admin-icon">📊</div>
+    <h3>Statistiques</h3>
+    <p>Activité, inscriptions et performances de la plateforme.</p>
+    <span class="admin-status">MODULE À DÉVELOPPER</span>
+   </div>
+
+   <div class="admin-card">
+    <div class="admin-icon">🏆</div>
+    <h3>Classements</h3>
+    <p>Suivi des classements et des résultats des participants.</p>
+    <span class="admin-status">MODULE À DÉVELOPPER</span>
+   </div>
+
+   <div class="admin-card">
+    <div class="admin-icon">🏢</div>
+    <h3>Entreprises</h3>
+    <p>Gestion des équipes saisonnières et des entreprises.</p>
+    <span class="admin-status">MODULE À DÉVELOPPER</span>
+   </div>
+
+   <div class="admin-card">
+    <div class="admin-icon">⚙️</div>
+    <h3>Paramètres</h3>
+    <p>Configuration générale de ValthoGame.</p>
+    <span class="admin-status">MODULE À DÉVELOPPER</span>
+   </div>
+
+  </div>
+
+  <hr class="admin-divider">
+
+  <div class="admin-actions">
+   <button class="admin-back" id="backToProfile">
+    ← RETOUR À MON PROFIL
+   </button>
+
+   <button class="admin-logout" id="adminLogout">
+    SE DÉCONNECTER
+   </button>
+  </div>
+
+ </div>
+
+</section>
+
 <div class="message" id="statusMessage"></div>
 
 </div>
 </div>
 
 <script>
+
 /* CONFIGURATION */
 
 const SUPABASE_URL = "https://qlnxqmvlvlviqjgpetpt.supabase.co";
@@ -307,7 +557,6 @@ const REDIRECT_URL = "https://valthogame.com/";
 let supabaseClient = null;
 let currentUser = null;
 let currentProfile = null;
-let authListenerReady = false;
 
 const $ = id => document.getElementById(id);
 
@@ -318,19 +567,30 @@ function message(text){
 }
 
 function showView(view){
+
  [
-  "choiceView","loginView","registerView",
-  "completeView","profileView","editView"
+  "choiceView",
+  "loginView",
+  "registerView",
+  "completeView",
+  "profileView",
+  "editView",
+  "adminView"
  ].forEach(id=>{
   $(id).classList.toggle("hidden",id!==view);
  });
+
  message("");
 }
 
 function openModal(){
  $("accountModal").classList.add("open");
- if(currentUser) loadProfile();
- else showView("choiceView");
+
+ if(currentUser){
+  loadProfile();
+ }else{
+  showView("choiceView");
+ }
 }
 
 function closeModal(){
@@ -342,7 +602,7 @@ $("mainAccountButton").onclick=openModal;
 $("closeModal").onclick=closeModal;
 
 $("accountModal").addEventListener("click",e=>{
- if(e.target===$("accountModal")) closeModal();
+ if(e.target===$("accountModal"))closeModal();
 });
 
 $("showLogin").onclick=()=>showView("loginView");
@@ -356,11 +616,17 @@ $("backProfile").onclick=()=>loadProfile();
 /* TYPES DE COMPTE */
 
 $("accountType").onchange=()=>{
- $("companyField").classList.toggle("hidden",$("accountType").value!=="seasonal");
+ $("companyField").classList.toggle(
+  "hidden",
+  $("accountType").value!=="seasonal"
+ );
 };
 
 $("completeAccountType").onchange=()=>{
- $("completeCompanyField").classList.toggle("hidden",$("completeAccountType").value!=="seasonal");
+ $("completeCompanyField").classList.toggle(
+  "hidden",
+  $("completeAccountType").value!=="seasonal"
+ );
 };
 
 /* INITIALISATION */
@@ -368,6 +634,7 @@ $("completeAccountType").onchange=()=>{
 async function initializeSupabase(){
 
  try{
+
   if(!window.supabase){
    throw new Error("La bibliothèque Supabase n'a pas été chargée.");
   }
@@ -384,27 +651,23 @@ async function initializeSupabase(){
    }
   );
 
-  /*
-   Le listener est enregistré avant la récupération
-   de la session pour ne pas manquer une connexion.
-  */
-
   supabaseClient.auth.onAuthStateChange((event,session)=>{
 
    currentUser=session?.user||null;
 
    if(event==="SIGNED_OUT"){
     currentProfile=null;
+    $("adminButton").classList.add("hidden");
     showView("choiceView");
     return;
    }
 
-   if(event==="SIGNED_IN"||event==="INITIAL_SESSION"||event==="USER_UPDATED"){
+   if(
+    event==="SIGNED_IN"||
+    event==="INITIAL_SESSION"||
+    event==="USER_UPDATED"
+   ){
     if(currentUser){
-     /*
-      On attend la fin du callback d'authentification
-      avant de lancer les requêtes vers la base.
-     */
      Promise.resolve().then(()=>loadProfile());
     }
    }
@@ -428,10 +691,12 @@ async function initializeSupabase(){
 }
 
 async function requireClient(){
+
  if(!supabaseClient){
   message("Supabase n'est pas initialisé. Recharge la page.");
   return false;
  }
+
  return true;
 }
 
@@ -444,6 +709,7 @@ async function googleLogin(){
  message("Redirection vers Google...");
 
  try{
+
   const {error}=await supabaseClient.auth.signInWithOAuth({
    provider:"google",
    options:{
@@ -514,6 +780,7 @@ $("registerForm").addEventListener("submit",async e=>{
   if(error)throw error;
 
   if(data.session){
+
    currentUser=data.user;
 
    await saveProfile({
@@ -525,8 +792,11 @@ $("registerForm").addEventListener("submit",async e=>{
     account_type:accountType,
     company_name:accountType==="seasonal"?companyName:null
    });
+
   }else{
+
    message("Compte créé ! Consulte ta boîte mail et clique sur le lien de confirmation pour activer ton compte.");
+
   }
 
  }catch(error){
@@ -556,6 +826,7 @@ $("loginForm").addEventListener("submit",async e=>{
   if(error)throw error;
 
   currentUser=data.user;
+
   await loadProfile();
 
  }catch(error){
@@ -663,8 +934,9 @@ async function saveProfile(profileData){
   };
 
   /*
-   UPSERT crée le profil s'il n'existe pas
-   ou le met à jour s'il existe déjà.
+   Important :
+   On ne transmet jamais le champ role depuis le navigateur.
+   Supabase conserve donc le rôle existant.
   */
 
   const {error}=await supabaseClient
@@ -682,6 +954,7 @@ async function saveProfile(profileData){
   if(readError)throw readError;
 
   currentProfile=updatedProfile;
+
   renderProfile(updatedProfile);
 
  }catch(error){
@@ -724,6 +997,7 @@ $("completeForm").addEventListener("submit",async e=>{
 /* AFFICHAGE PROFIL */
 
 function escapeHTML(value){
+
  return String(value).replace(/[&<>"']/g,c=>({
   "&":"&amp;",
   "<":"&lt;",
@@ -731,6 +1005,7 @@ function escapeHTML(value){
   '"':"&quot;",
   "'":"&#39;"
  }[c]));
+
 }
 
 function renderProfile(data){
@@ -762,8 +1037,72 @@ function renderProfile(data){
  $("editPhone").value=data.phone||"";
  $("editBirthDate").value=data.birth_date||"";
 
+ /* Affichage conditionnel du bouton admin */
+
+ const isAdmin=data.role==="admin";
+
+ $("adminButton").classList.toggle("hidden",!isAdmin);
+
  showView("profileView");
 }
+
+/* ACCÈS ADMINISTRATEUR */
+
+async function openAdminPanel(){
+
+ if(!currentUser||!await requireClient())return;
+
+ message("Vérification des droits administrateur...");
+
+ try{
+
+  /*
+   On relit le rôle dans Supabase au moment
+   de chaque ouverture du tableau de bord.
+  */
+
+  const {data,error}=await supabaseClient
+   .from("profiles")
+   .select("role")
+   .eq("id",currentUser.id)
+   .single();
+
+  if(error)throw error;
+
+  if(data.role!=="admin"){
+   message("Accès refusé : tu n'es pas administrateur.");
+   showView("profileView");
+   return;
+  }
+
+  $("adminEmail").textContent=currentUser.email||"";
+
+  showView("adminView");
+
+ }catch(error){
+
+  console.error(error);
+  showView("profileView");
+  message("Impossible de vérifier tes droits : "+error.message);
+
+ }
+
+}
+
+$("adminButton").onclick=openAdminPanel;
+
+/* RETOUR AU PROFIL DEPUIS ADMIN */
+
+$("backToProfile").onclick=()=>{
+
+ if(!currentUser||currentProfile?.role!=="admin"){
+  showView("choiceView");
+  return;
+ }
+
+ renderProfile(currentProfile);
+
+};
 
 /* MODIFIER PROFIL */
 
@@ -791,7 +1130,7 @@ $("editForm").addEventListener("submit",async e=>{
 
 /* DECONNEXION */
 
-$("logoutButton").onclick=async()=>{
+async function logout(){
 
  if(!await requireClient())return;
 
@@ -806,10 +1145,17 @@ $("logoutButton").onclick=async()=>{
 
  currentUser=null;
  currentProfile=null;
+
+ $("adminButton").classList.add("hidden");
+
  showView("choiceView");
+
  message("Tu es déconnecté.");
 
-};
+}
+
+$("logoutButton").onclick=logout;
+$("adminLogout").onclick=logout;
 
 /* DEMARRAGE */
 
